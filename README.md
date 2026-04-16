@@ -1,6 +1,6 @@
 # NYPD Shooting Incident Data Pipeline
 
-**Texas A&M University – DAEN 328 (Spring 2026)**
+**Texas A&M University – DAEN 328 Spring 2026**
 
 **Team:** William Colglazier, Mallika Parajuli, Ryan Soriano, Sharvi Sriperambudur
 
@@ -10,7 +10,7 @@
 
 This project implements a full-stack data engineering pipeline using NYPD shooting incident data from the NYC Open Data API. The system simulates a real-world workflow by extracting raw data, transforming it into a clean format, storing it in a PostgreSQL database, and serving insights through an interactive Streamlit dashboard.
 
-* **Dataset:** ~23,000 shooting incidents (2006–present)
+* **Dataset:** 23,000+ shooting incidents (2006–present)
 * **Source:** NYC Open Data (Socrata API)
 * **Update Frequency:** Quarterly
 
