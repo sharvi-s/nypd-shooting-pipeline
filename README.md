@@ -1,46 +1,112 @@
 # NYPD Shooting Incident Data Pipeline
-Texas A&M University - DAEN 328 Spring 2026  
-Team: William Colglazier, Mallika Parajuli, Ryan Soriano, Sharvi Sriperambudur
+
+**Texas A&M University – DAEN 328 (Spring 2026)**
+**Team:** William Colglazier, Mallika Parajuli, Ryan Soriano, Sharvi Sriperambudur
 
 ---
 
 ## Overview
-For our term project we built a full stack data engineering pipeline using NYPD shooting incident data pulled live from the NYC Open Data API. The goal was to simulate a real-world data pipeline from raw API data all the way to an interactive dashboard, with everything running in Docker so anyone can spin it up with one command.
 
-Dataset: 23,000+ shooting incidents across NYC from 2006 to present  
-Source: [NYC Open Data](https://data.cityofnewyork.us/Public-Safety/Shootings-2006-Present-/5ucz-vwe8)  
-Updates: Quarterly by NYPD
+This project implements a full-stack data engineering pipeline using NYPD shooting incident data from the NYC Open Data API. The system simulates a real-world workflow by extracting raw data, transforming it into a clean format, storing it in a PostgreSQL database, and serving insights through an interactive Streamlit dashboard.
+
+* **Dataset:** ~23,000 shooting incidents (2006–present)
+* **Source:** NYC Open Data (Socrata API)
+* **Update Frequency:** Quarterly
 
 ---
 
-## How it Works
+## Pipeline Architecture
 
-**1. Extract**  
-Hits the Socrata REST API and paginates through all records, saving the raw response to CSV.
+The pipeline is modular and fully automated using Docker Compose:
 
-**2. Transform**  
-Runs 10 modular cleaning functions on the data, each handling one task: parsing dates, standardizing borough names, casting types, dropping duplicates, deriving time features and more.
+1. **Extract**
+   Retrieves data from the Socrata API with pagination and stores raw responses.
 
-**3. Load**  
-Creates a normalized PostgreSQL schema and loads the cleaned data into two tables, incidents and locations.
+2. **Transform**
+   Applies structured cleaning functions including date parsing, type conversion, standardization, and duplicate handling.
 
-**4. Visualize**  
-Connects to the database and serves an interactive Streamlit dashboard with 10 charts, sidebar filters and a live incident map of NYC.
+3. **Load**
+   Inserts cleaned data into a PostgreSQL database using a normalized schema.
+
+4. **Visualize**
+   A Streamlit dashboard queries the database and presents interactive charts, filters, and summary metrics.
+
+---
+
+## Database Design
+
+The PostgreSQL database is initialized empty and populated automatically during pipeline execution.
+
+* **incidents table:** stores core incident data (date, time, borough, etc.)
+* **locations table:** stores precinct and geographic details
+
+This separation supports cleaner queries and better organization of structured data.
+
+---
+
+## Dashboard Preview
+
+![Dashboard](./images/dashboard.png)
 
 ---
 
 ## Running the Project
 
+### 1. Clone the repository
+
 ```bash
 git clone https://github.com/sharvi-s/nypd-shooting-pipeline.git
 cd nypd-shooting-pipeline
+```
+
+### 2. Set up environment variables
+
+```bash
 cp .env.sample .env
+```
+
+Fill in required values (API key, database credentials).
+
+### 3. Run the pipeline
+
+```bash
 docker-compose up --build
 ```
 
-Open http://localhost:8501 in your browser. The first run takes about 90 seconds to fetch and load all the data, after that it starts instantly.
+### 4. Access the dashboard
+
+Open: http://localhost:8501
+
+The first run may take ~1–2 minutes to fetch and load data. Subsequent runs start instantly.
 
 ---
 
-## Stack
-Python, PostgreSQL, SQLAlchemy, Streamlit, Plotly, Docker, NYC Open Data
+## Tech Stack
+
+* **Python**
+* **PostgreSQL**
+* **SQLAlchemy**
+* **Streamlit**
+* **Plotly**
+* **Docker & Docker Compose**
+* **NYC Open Data API**
+
+---
+
+## Team Contributions
+
+* **William Colglazier:** API extraction and data retrieval logic
+* **Mallika Parajuli:** Data transformation and cleaning functions
+* **Ryan Soriano:** Database schema design and data loading pipeline
+* **Sharvi Sriperambudur:** Streamlit dashboard and data visualization
+
+---
+
+## Future Improvements
+
+* Add real-time data updates or streaming ingestion
+* Enhance geospatial visualizations with interactive maps
+* Optimize query performance with indexing and caching
+* Deploy dashboard for public access
+
+---
